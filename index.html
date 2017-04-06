@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <title>Trivia Game</title>
+  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+</head>
+
+<style>
+  #question {
+    font-size: 20pt;
+    min-height: 75px;
+  }
+  div {
+    text-align: center;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="answer" id="question"></div>
+    </div><br><br>
+    <div class="row">
+      <div class="answer" id="answer1"></div>
+    </div>
+    <div class="row">
+      <div class="answer" id="answer2"></div>
+    </div>
+    <div class="row">
+      <div class="answer" id="answer3"></div>
+    </div>
+    <div class="row">
+      <div class="answer" id="answer4"></div>
+    </div>
+    <br><br>
+    <button type="button" class="btn btn-default" id="endButton">Another?</button>
+  </div>
+
+  <script  src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+    var questions = {};
+    var wins = 0;
+    var losses = 0;
+    var i = 0;
+    var correctAnswer;
+
+    $.ajax({
+      url: "https://opentdb.com/api.php?amount=100&type=multiple",
+      type: "GET",
+      success: function(response) {
+        questions = response;
+        theGame();
+      }
+    });
+
+    function theGame() {
+      correctAnswer = questions.results[i].correct_answer;
+      var randomNumber = Math.floor((Math.random()*3) + 0);
+
+      questions.results[i].incorrect_answers.splice(randomNumber, 0, correctAnswer);
+
+      $("#question").html(questions.results[i].question);
+      $("#answer1").html(questions.results[i].incorrect_answers[0]);
+      $("#answer2").html(questions.results[i].incorrect_answers[1]);
+      $("#answer3").html(questions.results[i].incorrect_answers[2]);
+      $("#answer4").html(questions.results[i].incorrect_answers[3]);
+    }
+
+    $(".answer").on("click", function() {
+        guess = $(this).text();
+        if (guess === correctAnswer) {
+          wins++;
+          reset();
+        }
+        else if (guess !== correctAnswer) {
+          losses++;
+          reset();
+        }
+        console.log("Wins: " + wins + " Losses: " + losses);
+    });         
+
+    $("#endButton").on("click", function() {
+      reset();
+    });   
+
+     function reset() {
+      i++;
+      theGame();
+     }      
+  }); 
+
+  
+    
+  </script>
+
+</body>
+</html>
