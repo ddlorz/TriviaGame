@@ -9,55 +9,125 @@
 </head>
 
 <style>
-  #question {
-    font-size: 20pt;
-    min-height: 75px;
+  body {
+    background-color: #ffffff;
+    height: 100%;
+    color: #000000;
+    font-size: 14pt;
+  }
+  .bgGray {
+    background-color: #d9d9d9;
+    padding: 30px;
+    border: 2px solid;
+    border-radius: 10px;
+  }
+  .bgLightGray {
+    background-color: #f2f2f2;
+    border: 1px solid;
+    border-radius: 10px;
+  }
+  h1 {
+      margin-top: 0px;
+      font-size: 30pt;
   }
   div {
     text-align: center;
   }
+  .answer{
+    display : block;
+    font-size: 12pt;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
+  .answer:hover {
+    color: #ff1a1a;
+  }
+  .spacer {
+    min-height: 40px;
+  }
+  #question {
+    font-size: 16pt;
+    min-height: 60px;
+  }  
   #timerBox {
     min-height: 30px;
+  }
+  #answerBox {
+    font-size: 11pt;
+  }
+  #jonsnow {
+    height: 120px;
+    width: 120px; 
+    margin-top: 20px;   
   }
 
 </style>
 
 <body>
-  <div class="container">
-    <div class="row">
-      <div class="answer" id="question"></div>
-    </div><br>
-    <div class="row">
-      <div class="" id="timerBox"></div>
+  <div class="container bgLightGray">
+    <nav class="nav navbar">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 bgGray" style="padding-top: 0px;">
+            <div class="row">
+              <div class="col-lg-8 col-lg-offset-1">
+                <header class="text-center">
+                <h3>JOHN SNOW'S</h3>
+                <h1>YOU KNOW NOTHING</h1>
+                <h4>Trivia Game</h4>
+                </header>   
+              </div>
+              <div class="col-lg-1">
+                <img src="assets/images/jonsnow.png" alt="Jon Snow" id="jonsnow">
+              </div>
+            </div>         
+          </div>          
+      </div>
+    </nav>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-lg-offset-2 bgGray">
+          <div class="row">
+            <div class="questionClass" id="question"></div>
+          </div><br> 
+          <div class="row">       
+          <div class="answer" id="answer1"><p></p></div>
+          </div>
+          <div class="row">
+            <div class="answer rounded border-top-0" id="answer2"></div>
+          </div>
+          <div class="row">
+            <div class="answer" id="answer3"></div>
+          </div>
+          <div class="row">
+            <div class="answer" id="answer4"></div>
+          </div>          
+        </div>
+        <div class="col-lg-3 col-lg-offset-1 bgGray">  
+          <div class="row">
+            <div class="" id="timerBox">10</div>
+          </div><br>
+          <div class="row">
+            <div class="" id="answerBox">Answer: </div>
+          </div><br>
+          <div class="row">
+            <div class="" id="msgBox">Good Luck!</div>
+          </div><br>
+          <div class="row">
+            <div class="" id="winBox">Wins: 0</div>
+          </div>
+          <div class="row">
+            <div class="" id="lossBox">Losses: 0</div>
+          </div>   
+           <div class="row">
+            <div class="" id="timedOutBox">Timed Out: 0</div>
+          </div>
+          <!--<button type="button" class="btn btn-default" id="endButton">Another?</button>-->
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <div class="" id="answerBox">Answer was: </div>
-    </div>
-    <div class="row">
-      <div class="" id="msgBox"></div>
-    </div>
-    <br><br>
-    <div class="row">
-      <div class="answer" id="answer1"></div>
-    </div>
-    <div class="row">
-      <div class="answer" id="answer2"></div>
-    </div>
-    <div class="row">
-      <div class="answer" id="answer3"></div>
-    </div>
-    <div class="row">
-      <div class="answer" id="answer4"></div>
-    </div>
-    <br><br>
-    <div class="row">
-      <div class="" id="winBox">Wins: 0</div>
-    </div>
-    <div class="row">
-      <div class="" id="lossBox">Losses: 0</div>
-    </div>    
-    <br><br>
-    <button type="button" class="btn btn-default" id="endButton">Another?</button>
+    <div class="spacer"></div>
   </div>
 
   <script  src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
@@ -68,8 +138,10 @@
     var questions = {};
     var wins = 0;
     var losses = 0;
+    var timedOut = 0;
     var i = 0;
     var correctAnswer;
+    var gaming = false;
 
     $.ajax({
       url: "https://opentdb.com/api.php?amount=100&type=multiple",
@@ -81,13 +153,14 @@
     });
 
     function theGame() {
-      var timerGame = 10;
+      gaming = true;
+      $("#timerBox").html("15");
+      var timerGame = 14;
       myTimer = setInterval (function() { 
         $("#timerBox").html(timerGame)
-        //console.log(timerGame);
         timerGame--;
         if (timerGame === -1) {
-          losses++;
+          timedOut++;
           $("#msgBox").html("Times Up!");
           reset();
         }
@@ -106,6 +179,7 @@
     }
 
     $(".answer").on("click", function() {
+      if (gaming) {
         guess = $(this).text();
        
         if (guess === correctAnswer) {
@@ -119,6 +193,7 @@
           reset();
         }
         console.log("Wins: " + wins + " Losses: " + losses);
+      }
     });         
 
     $("#endButton").on("click", function() {
@@ -126,13 +201,25 @@
     });   
 
      function reset() {
+      gaming = false;
       i++;
       clearTimeout(myTimer);
-      $("#answerBox").html("Answer was: " + correctAnswer);
+      $("#answerBox").html("Answer: " + correctAnswer);
       $("#timerBox").html("10");
       $("#winBox").html("Wins: " + wins);
       $("#lossBox").html("Losses: " + losses);
-      theGame();      
+      $("#timedOutBox").html("Timed Out: " + timedOut);
+      $("#timerBox").html("New Question in 5")
+
+      timerGame = 4;
+      myTimer2 = setInterval (function() { 
+        $("#timerBox").html("New Question in " + timerGame)
+        timerGame--;
+        if (timerGame === -1) {
+          theGame();
+          clearTimeout(myTimer2);
+        }
+      }, 1000);              
      }      
   }); 
 
