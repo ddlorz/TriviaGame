@@ -1,0 +1,66 @@
+body {
+  background-image: url("https://images.alphacoders.com/226/226091.jpg");
+  height: 100%;
+  color: #000000;
+  font-size: 14pt;
+  font-family: 'Cinzel Decorative', cursive; 
+  font-weight: bold;
+}
+h1, h2, h3, h4 {
+    font-weight: bold;
+}
+h1 {
+    margin-top: 0px;
+    font-size: 30pt;
+}
+div {
+  text-align: center;
+}
+nav {
+  margin-top: 30px;
+}
+.bgGray {
+  background-color:rgba(192,192,192,1.0);
+  padding: 30px;
+  border: 2px solid;
+  border-radius: 10px;
+}
+.bgLightGray {  
+  background-color:rgba(192,192,192,0.3);
+  border: 1px solid;
+  border-radius: 10px;
+  margin-top: 50px;  
+  min-height: 600px;
+}
+
+.answer{
+  display : block;
+  font-size: 12pt;
+  margin-bottom: 5px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.answer:hover {
+  color: #ff1a1a;
+  text-decoration: underline;
+  cursor: default;
+}
+.spacer {
+  min-height: 40px;
+}
+#question {
+  font-size: 14pt;
+  min-height: 60px;
+  color: #A57164;
+}  
+#timerBox {
+  min-height: 30px;
+}
+#answerBox {
+  font-size: 11pt;
+}
+#jonsnow {
+  height: 120px;
+  width: 120px; 
+  margin-top: 20px;   
+}
